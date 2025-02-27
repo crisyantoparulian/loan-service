@@ -1,12 +1,10 @@
 # Loan Service Backend Interview
 
-
-[task-repo](https://github.com/crisyantoparulian/backendgolang)
 ## Requirements
 
 To run this project you need to have the following installed:
 
-1. [Go](https://golang.org/doc/install) version 1.21
+1. [Go](https://golang.org/doc/install) version 1.23
 2. [GNU Make](https://www.gnu.org/software/make/)
 3. [oapi-codegen](https://github.com/deepmap/oapi-codegen)
 
@@ -67,6 +65,8 @@ If you change `database.sql` file, you need to reinitate the database by running
 ```
 docker compose down --volumes
 ```
+
+If you want to seeds the user data, you can use `seeds.sql`
 
 ## Testing
 

@@ -366,18 +366,21 @@ components:
       type: object
       required: [borrower_id, principal_amount, rate, roi]
       properties:
-        borrower_id:
-          type: string
-          format: uuid
         principal_amount:
           type: number
           format: double
+          x-oapi-codegen-extra-tags:
+            validate: "required,gt=0"
         rate:
           type: number
           format: double
+          x-oapi-codegen-extra-tags:
+            validate: "required,gt=0"
         roi:
           type: number
           format: double
+          x-oapi-codegen-extra-tags:
+            validate: "required,gt=0"
     LoanVisitRequest:
       type: object
       required: [proof, notes]
@@ -402,12 +405,18 @@ components:
         loan_aggrement_url:
           type: string
           format: uri
+          x-oapi-codegen-extra-tags:
+            validate: "required,url"
         field_officer_id:
           type: string
           format: uuid
+          x-oapi-codegen-extra-tags:
+            validate: "required,uuid"
         date_of_disbursement:
           type: string
           format: date-time
+          x-oapi-codegen-extra-tags:
+            validate: "required"
     LoanInvestmentRequest:
       type: object
       required: [amount]
@@ -415,6 +424,8 @@ components:
         amount:
           type: number
           format: double
+          x-oapi-codegen-extra-tags:
+            validate: "required,gt=0"
     LoanDetailResponse:
       type: object
       required:

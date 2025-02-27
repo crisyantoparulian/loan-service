@@ -234,7 +234,22 @@ func (s *Server) InvestLoan(c echo.Context, loanID openapi_types.UUID, params ge
 		return httphelper.HttpRespError(c, err)
 	}
 
-	// TODO: pulish event for generate & send aggrement
+	// TODO: change this block into event, because it will take time for generate & sending the aggrement
+	loan, err = s.Repository.GetLoanByIDWithDetailSQL(ctx, loanID)
+	if err != nil {
+		return httphelper.HttpRespError(c, err)
+	}
+
+	filename := fmt.Sprintf("aggrement-%s.pdf", loan.LoanCode)
+	err = generateAggrementPDF(loan.Borrower.User.FullName, filename)
+	if err != nil {
+		fmt.Println("Error generate pdf!") // TODO: handler this error
+	}
+
+	for _, invest := range loan.Investments {
+		userMail := invest.InvestorDetail.UserDetail.Email
+		s.sendMail(filename, userMail)
+	}
 
 	return httphelper.HttpSuccessCreated(c, "success invest", nil)
 }

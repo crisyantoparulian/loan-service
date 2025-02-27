@@ -42,6 +42,48 @@ func (m *MockRepositoryInterface) EXPECT() *MockRepositoryInterfaceMockRecorder 
 	return m.recorder
 }
 
+// ApproveLoan mocks base method.
+func (m *MockRepositoryInterface) ApproveLoan(ctx context.Context, loan *models.Loan) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ApproveLoan", ctx, loan)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ApproveLoan indicates an expected call of ApproveLoan.
+func (mr *MockRepositoryInterfaceMockRecorder) ApproveLoan(ctx, loan any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApproveLoan", reflect.TypeOf((*MockRepositoryInterface)(nil).ApproveLoan), ctx, loan)
+}
+
+// CreateDisbursement mocks base method.
+func (m *MockRepositoryInterface) CreateDisbursement(ctx context.Context, disbursement *models.Disbursement, documents []models.Document, loan *models.Loan) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateDisbursement", ctx, disbursement, documents, loan)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateDisbursement indicates an expected call of CreateDisbursement.
+func (mr *MockRepositoryInterfaceMockRecorder) CreateDisbursement(ctx, disbursement, documents, loan any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDisbursement", reflect.TypeOf((*MockRepositoryInterface)(nil).CreateDisbursement), ctx, disbursement, documents, loan)
+}
+
+// CreateInvestment mocks base method.
+func (m *MockRepositoryInterface) CreateInvestment(ctx context.Context, investment *models.Investment, loan *models.Loan) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateInvestment", ctx, investment, loan)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateInvestment indicates an expected call of CreateInvestment.
+func (mr *MockRepositoryInterfaceMockRecorder) CreateInvestment(ctx, investment, loan any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInvestment", reflect.TypeOf((*MockRepositoryInterface)(nil).CreateInvestment), ctx, investment, loan)
+}
+
 // CreateLoan mocks base method.
 func (m *MockRepositoryInterface) CreateLoan(ctx context.Context, loan *models.Loan) error {
 	m.ctrl.T.Helper()
@@ -71,18 +113,33 @@ func (mr *MockRepositoryInterfaceMockRecorder) CreateVisit(ctx, visit, loan any)
 }
 
 // GetBorrowerByIDWithDetail mocks base method.
-func (m *MockRepositoryInterface) GetBorrowersByIDWithDetail(ctx context.Context, id uuid.UUID) (*models.Borrower, error) {
+func (m *MockRepositoryInterface) GetBorrowerByIDWithDetail(ctx context.Context, id uuid.UUID) (*models.Borrower, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBorrowersByIDWithDetail", ctx, id)
+	ret := m.ctrl.Call(m, "GetBorrowerByIDWithDetail", ctx, id)
 	ret0, _ := ret[0].(*models.Borrower)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetBorrowersByIDWithDetail indicates an expected call of GetBorrowersByIDWithDetail.
-func (mr *MockRepositoryInterfaceMockRecorder) GetBorrowersByIDWithDetail(ctx, id any) *gomock.Call {
+// GetBorrowerByIDWithDetail indicates an expected call of GetBorrowerByIDWithDetail.
+func (mr *MockRepositoryInterfaceMockRecorder) GetBorrowerByIDWithDetail(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBorrowersByIDWithDetail", reflect.TypeOf((*MockRepositoryInterface)(nil).GetBorrowersByIDWithDetail), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBorrowerByIDWithDetail", reflect.TypeOf((*MockRepositoryInterface)(nil).GetBorrowerByIDWithDetail), ctx, id)
+}
+
+// GetEmployeeByID mocks base method.
+func (m *MockRepositoryInterface) GetEmployeeByID(ctx context.Context, id uuid.UUID) (*models.Employee, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEmployeeByID", ctx, id)
+	ret0, _ := ret[0].(*models.Employee)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEmployeeByID indicates an expected call of GetEmployeeByID.
+func (mr *MockRepositoryInterfaceMockRecorder) GetEmployeeByID(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEmployeeByID", reflect.TypeOf((*MockRepositoryInterface)(nil).GetEmployeeByID), ctx, id)
 }
 
 // GetListLoans mocks base method.
@@ -129,4 +186,34 @@ func (m *MockRepositoryInterface) GetLoanByIDWithDetailSQL(ctx context.Context, 
 func (mr *MockRepositoryInterfaceMockRecorder) GetLoanByIDWithDetailSQL(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoanByIDWithDetailSQL", reflect.TypeOf((*MockRepositoryInterface)(nil).GetLoanByIDWithDetailSQL), ctx, id)
+}
+
+// GetLoanInvestmentByInvestorID mocks base method.
+func (m *MockRepositoryInterface) GetLoanInvestmentByInvestorID(ctx context.Context, loanID, investorID uuid.UUID) ([]models.Investment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetLoanInvestmentByInvestorID", ctx, loanID, investorID)
+	ret0, _ := ret[0].([]models.Investment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLoanInvestmentByInvestorID indicates an expected call of GetLoanInvestmentByInvestorID.
+func (mr *MockRepositoryInterfaceMockRecorder) GetLoanInvestmentByInvestorID(ctx, loanID, investorID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoanInvestmentByInvestorID", reflect.TypeOf((*MockRepositoryInterface)(nil).GetLoanInvestmentByInvestorID), ctx, loanID, investorID)
+}
+
+// GetVisits mocks base method.
+func (m *MockRepositoryInterface) GetVisits(ctx context.Context, input GetVisitInput) ([]models.Visit, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVisits", ctx, input)
+	ret0, _ := ret[0].([]models.Visit)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVisits indicates an expected call of GetVisits.
+func (mr *MockRepositoryInterfaceMockRecorder) GetVisits(ctx, input any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVisits", reflect.TypeOf((*MockRepositoryInterface)(nil).GetVisits), ctx, input)
 }

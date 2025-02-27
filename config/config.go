@@ -12,6 +12,7 @@ import (
 type Config struct {
 	App      App
 	Database Database
+	Mail     SmtpMail
 }
 
 type App struct {
@@ -22,6 +23,14 @@ type Database struct {
 	MaxOpenConn  int
 	MaxIddleConn int
 	DebugMode    bool
+}
+
+type SmtpMail struct {
+	SMTPHost   string
+	SMTPPort   int
+	SMTPUser   string
+	SMTPPass   string
+	SMTPSender string
 }
 
 var (
@@ -49,6 +58,13 @@ func LoadConfig() *Config {
 				MaxOpenConn:  getIntFromEnvWithDefaultVal("MAX_OPEN_CONN", 20),
 				MaxIddleConn: getIntFromEnvWithDefaultVal("MAX_IDDLE_CONN", 5),
 				DebugMode:    true,
+			},
+			Mail: SmtpMail{
+				SMTPHost:   os.Getenv("SMTP_HOST"),
+				SMTPPort:   getIntFromEnvWithDefaultVal(os.Getenv("SMTP_PORT"), 587),
+				SMTPUser:   os.Getenv("SMTP_USER"),
+				SMTPPass:   os.Getenv("SMTP_PASS"),
+				SMTPSender: os.Getenv("SMTP_SENDER"),
 			},
 		}
 	})

@@ -10,6 +10,11 @@ services:
       MAX_OPEN_CONN: 20
       MAX_IDDLE_CONN: 5
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: crisyanto.work@gmail.com
+      SMTP_PASS: password_here
+      SMTP_SENDER: crisyanto.work@gmail.com
     depends_on:
       db:
         condition: service_healthy
