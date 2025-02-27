@@ -1,0 +1,578 @@
+openapi: 3.0.3
+info:
+  title: Loan Service API
+  version: 1.0.0
+paths:
+  /loans:
+    post:
+      summary: API for submitting a new loan proposal
+      description: API to allow users to submit a new loan proposal.
+      operationId: submitLoanProposal
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequest'
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitLoanResponseData'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: API for getting list of loans
+      description: API to retrieve a list of loan proposals.
+      operationId: getLoans
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+        - name: _s
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: _s_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [principal_amount, total_investment_amount, rate, roi]
+        - name: _status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanListResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /loans/{loanID}:
+    get:
+      summary: API for getting loan details
+      description: API to retrieve details of a specific loan.
+      operationId: getLoanDetails
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+        - name: loanID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanDetailResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /loans/{loanID}/visit:
+    post:
+      summary: Create visit to check validity of borrower
+      description: API for field validators to create a visit entry for a loan.
+      operationId: createLoanVisit
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+        - name: loanID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanVisitRequest'
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /loans/{loanID}/approve:
+    put:
+      summary: Approve loan proposal by admin
+      description: API to approve a loan proposal.
+      operationId: approveLoan
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+        - name: loanID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /loans/{loanID}/disburse:
+    post:
+      summary: Create loan disbursement
+      description: API to create disbursement on a loan.
+      operationId: disburseLoan
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+        - name: loanID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanDisbursementRequest'
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /loans/{loanID}/invest:
+    post:
+      summary: Create investment on loan
+      description: API to create an investment on a loan.
+      operationId: investLoan
+      parameters:
+        - name: login-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: login-user-role
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/LoginUserRole'
+        - name: loanID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanInvestmentRequest'
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    LoanListResponse:
+      type: object
+      required: [message, success]
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+        data:
+          $ref: "#/components/schemas/LoanList"
+    LoanList:
+      type: object
+      required: [page, total, offset, items,limit]
+      properties:
+        total:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+        limit:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/LoanListDetail"
+    LoanListDetail:
+      type: object
+      required: [id, borrower_id, field_validator_id, principal_amount, total_investment_amount, total_investors, rate, roi, status, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        borrower_id:
+          type: string
+          format: uuid
+        field_validator_id:
+          type: string
+          format: uuid
+          nullable: true
+        principal_amount:
+          type: number
+          format: double
+        total_investment_amount:
+          type: number
+          format: double
+        total_investors:
+          type: integer
+        rate:
+          type: number
+          format: double
+        roi:
+          type: number
+          format: double
+        status:
+          type: string
+        approval_date:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+    LoginUserRole:
+      type: string
+      enum: [borrower, investor, field_validator, field_officer, admin]
+    LoanRequest:
+      type: object
+      required: [borrower_id, principal_amount, rate, roi]
+      properties:
+        borrower_id:
+          type: string
+          format: uuid
+        principal_amount:
+          type: number
+          format: double
+        rate:
+          type: number
+          format: double
+        roi:
+          type: number
+          format: double
+    LoanVisitRequest:
+      type: object
+      required: [proof, notes]
+      properties:
+        proof:
+          type: array
+          items:
+            type: string
+            format: uri
+          example: ["https://example-image.com/proof1.jpg"]
+          x-oapi-codegen-extra-tags:
+            validate: "required,dive,url"
+        notes:
+          type: string
+          example: "customer is human"
+          x-oapi-codegen-extra-tags:
+            validate: "required"
+    LoanDisbursementRequest:
+      type: object
+      required: [loan_aggrement_url, field_officer_id, date_of_disbursement]
+      properties:
+        loan_aggrement_url:
+          type: string
+          format: uri
+        field_officer_id:
+          type: string
+          format: uuid
+        date_of_disbursement:
+          type: string
+          format: date-time
+    LoanInvestmentRequest:
+      type: object
+      required: [amount]
+      properties:
+        amount:
+          type: number
+          format: double
+    LoanDetailResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+        data:
+          $ref: "#/components/schemas/LoanDetail"
+    LoanDetail:
+      type: object
+      required:
+        - id
+        - principal_amount
+        - total_investment_amount
+        - total_investors
+        - rate
+        - roi
+        - status
+        - investments
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        field_validator_id:
+          type: string
+          format: uuid
+        principal_amount:
+          type: number
+          format: double
+        total_investment_amount:
+          type: number
+          format: double
+        total_investors:
+          type: integer
+        rate:
+          type: number
+          format: double
+        roi:
+          type: number
+          format: double
+        status:
+          type: string
+          enum: ["proposed", "approved", "invested", "disbursed"]
+        approval_date:
+          type: string
+          format: date-time
+          nullable: true
+        investments:
+          type: array
+          items:
+            $ref: "#/components/schemas/InvestmentDetail"
+        created_at:
+          type: string
+          format: date-time
+        borrower:
+          $ref: "#/components/schemas/Borrower"
+    Borrower:
+      type: object
+      required: [name, id, email, phone, joined_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        nik:
+          type: string
+        joined_at:
+          type: string
+          format: date-time
+    InvestmentDetail:
+      type: object
+      required:
+        - investment_id
+        - investor_id
+        - investor_name
+        - investor_email
+        - amount
+        - created_at
+      properties:
+        investment_id:
+          type: string
+          format: uuid
+        investor_id:
+          type: string
+          format: uuid
+        investor_name:
+          type: string
+        investor_email:
+          type: string
+        amount:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+    SubmitLoanResponse:
+      type: object
+      required: [success, message]
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success submit loan"
+        data:
+          $ref: "#/components/schemas/SubmitLoanResponseData"
+    SubmitLoanResponseData:
+      type: object
+      required: [loan_id]
+      properties:
+        loan_id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+    SuccessResponse:
+      type: object
+      required: [success, message]
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+        data:
+          anyOf:
+            - type: object
+            - type: array
+          nullable: true
+          x-omitempty: true
+    ErrorResponse:
+      type: object
+      required: [success, message]
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "error occurred"
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Detailed validation errors, with field names as keys and error messages as values"
+          example:
+            loan_amount: "Loan amount must be greater than zero"
+            borrower_id: "Borrower ID is required"
